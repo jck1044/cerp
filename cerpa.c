@@ -86,6 +86,7 @@ void tim1_cc_isr(void)
         flip = -flip; // up-down sweep
     step += flip;     // next step
 
+    // SYNC = 0XBB = 187 (I assume to make sure data is accurate)
     char sync_buf[20];
     int sync_buf_len;
     snprintf(sync_buf, sizeof(sync_buf), "SYNC: %i", SYNC);
@@ -113,25 +114,35 @@ void tim1_cc_isr(void)
     while (!(SPI1_SR & SPI_SR_RXNE))
         ; // wait for SPI transfer complete
 
-    // swab part 1
-    char spi1_buf[20];
-    int spi1_buf_len;
-    snprintf(spi1_buf, sizeof(spi1_buf), "SPI_DR 1: %li", SPI1_DR & 0xFF);
-    spi1_buf_len = strlen(spi1_buf);
-    for (int j = 0; j < spi1_buf_len; j++)
-        usart_send_blocking(USART1, spi1_buf[j]);
+    // swab combined
+    char spi_buf[20];
+    int spi_buf_len;
+    snprintf(spi_buf, sizeof(spi_buf), "SPI_DR: %li", SPI1_DR);
+    spi_buf_len = strlen(spi_buf);
+    for (int j = 0; j < spi_buf_len; j++)
+        usart_send_blocking(USART1, spi_buf[j]);
     usart_send_blocking(USART1, '\r');
     usart_send_blocking(USART1, '\n');
 
-    // swab part 2
-    char spi2_buf[20];
-    int spi2_buf_len;
-    snprintf(spi2_buf, sizeof(spi2_buf), "SPI_DR 2: %li", (SPI1_DR & 0xFF00) >> 8);
-    spi2_buf_len = strlen(spi2_buf);
-    for (int j = 0; j < spi2_buf_len; j++)
-        usart_send_blocking(USART1, spi2_buf[j]);
-    usart_send_blocking(USART1, '\r');
-    usart_send_blocking(USART1, '\n');
+    // // swab part 1
+    // char spi1_buf[20];
+    // int spi1_buf_len;
+    // snprintf(spi1_buf, sizeof(spi1_buf), "SPI_DR 1: %li", SPI1_DR & 0xFF);
+    // spi1_buf_len = strlen(spi1_buf);
+    // for (int j = 0; j < spi1_buf_len; j++)
+    //     usart_send_blocking(USART1, spi1_buf[j]);
+    // usart_send_blocking(USART1, '\r');
+    // usart_send_blocking(USART1, '\n');
+
+    // // swab part 2
+    // char spi2_buf[20];
+    // int spi2_buf_len;
+    // snprintf(spi2_buf, sizeof(spi2_buf), "SPI_DR 2: %li", (SPI1_DR & 0xFF00) >> 8);
+    // spi2_buf_len = strlen(spi2_buf);
+    // for (int j = 0; j < spi2_buf_len; j++)
+    //     usart_send_blocking(USART1, spi2_buf[j]);
+    // usart_send_blocking(USART1, '\r');
+    // usart_send_blocking(USART1, '\n');
 
     putswab(SPI1_DR); // Send RPA sample (SPI readout has bytes swapped)
 
@@ -140,50 +151,72 @@ void tim1_cc_isr(void)
     TIM1_CCMR1 = TIM_CCMR1_OC1M_TOGGLE;
 
     int swp_read = SWP_read();
-    // wd part 1
-    char swp1_buf[20];
-    int swp1_buf_len;
-    snprintf(swp1_buf, sizeof(swp1_buf), "SWP_read 1: %i", (swp_read & 0xFF00) >> 8);
-    swp1_buf_len = strlen(swp1_buf);
-    for (int j = 0; j < swp1_buf_len; j++)
-        usart_send_blocking(USART1, swp1_buf[j]);
+
+    // wd combined
+    char swp_buf[20];
+    int swp_buf_len;
+    snprintf(swp_buf, sizeof(swp_buf), "SWP_read: %i", swp_read);
+    swp_buf_len = strlen(swp_buf);
+    for (int j = 0; j < swp_buf_len; j++)
+        usart_send_blocking(USART1, swp_buf[j]);
     usart_send_blocking(USART1, '\r');
     usart_send_blocking(USART1, '\n');
 
-    // wd part 2
-    char swp2_buf[20];
-    int swp2_buf_len;
-    snprintf(swp2_buf, sizeof(swp2_buf), "SWP_read 2: %i", swp_read & 0xFF);
-    swp2_buf_len = strlen(swp2_buf);
-    for (int j = 0; j < swp2_buf_len; j++)
-        usart_send_blocking(USART1, swp2_buf[j]);
-    usart_send_blocking(USART1, '\r');
-    usart_send_blocking(USART1, '\n');
+    // // wd part 1
+    // char swp1_buf[20];
+    // int swp1_buf_len;
+    // snprintf(swp1_buf, sizeof(swp1_buf), "SWP_read 1: %i", (swp_read & 0xFF00) >> 8);
+    // swp1_buf_len = strlen(swp1_buf);
+    // for (int j = 0; j < swp1_buf_len; j++)
+    //     usart_send_blocking(USART1, swp1_buf[j]);
+    // usart_send_blocking(USART1, '\r');
+    // usart_send_blocking(USART1, '\n');
+
+    // // wd part 2
+    // char swp2_buf[20];
+    // int swp2_buf_len;
+    // snprintf(swp2_buf, sizeof(swp2_buf), "SWP_read 2: %i", swp_read & 0xFF);
+    // swp2_buf_len = strlen(swp2_buf);
+    // for (int j = 0; j < swp2_buf_len; j++)
+    //     usart_send_blocking(USART1, swp2_buf[j]);
+    // usart_send_blocking(USART1, '\r');
+    // usart_send_blocking(USART1, '\n');
 
     putwd(swp_read); // Send SWP sample from prev  SWP_convert()
 
     int hk_read = HK_samp();
-    // wd part 1
-    char hk1_buf[20];
-    int hk1_buf_len;
-    snprintf(hk1_buf, sizeof(hk1_buf), "HK_samp 1: %i", (hk_read & 0xFF00) >> 8);
-    hk1_buf_len = strlen(hk1_buf);
-    for (int j = 0; j < hk1_buf_len; j++)
-        usart_send_blocking(USART1, hk1_buf[j]);
+
+    // wd combined
+    char hk_buf[20];
+    int hk_buf_len;
+    snprintf(hk_buf, sizeof(hk_buf), "HK_samp: %i", hk_read);
+    hk_buf_len = strlen(hk_buf);
+    for (int j = 0; j < hk_buf_len; j++)
+        usart_send_blocking(USART1, hk_buf[j]);
     usart_send_blocking(USART1, '\r');
     usart_send_blocking(USART1, '\n');
 
-    // wd part 2
-    char hk2_buf[20];
-    int hk2_buf_len;
-    snprintf(hk2_buf, sizeof(hk2_buf), "HK_samp 2: %i", hk_read & 0xFF);
-    hk2_buf_len = strlen(hk2_buf);
-    for (int j = 0; j < hk2_buf_len; j++)
-        usart_send_blocking(USART1, hk2_buf[j]);
-    usart_send_blocking(USART1, '\r');
-    usart_send_blocking(USART1, '\n');
+    // // wd part 1
+    // char hk1_buf[20];
+    // int hk1_buf_len;
+    // snprintf(hk1_buf, sizeof(hk1_buf), "HK_samp 1: %i", (hk_read & 0xFF00) >> 8);
+    // hk1_buf_len = strlen(hk1_buf);
+    // for (int j = 0; j < hk1_buf_len; j++)
+    //     usart_send_blocking(USART1, hk1_buf[j]);
+    // usart_send_blocking(USART1, '\r');
+    // usart_send_blocking(USART1, '\n');
 
-    putwd(HK_samp()); // Send one of 8 different HK vals muxed by lsbs of pakcount
+    // // wd part 2
+    // char hk2_buf[20];
+    // int hk2_buf_len;
+    // snprintf(hk2_buf, sizeof(hk2_buf), "HK_samp 2: %i", hk_read & 0xFF);
+    // hk2_buf_len = strlen(hk2_buf);
+    // for (int j = 0; j < hk2_buf_len; j++)
+    //     usart_send_blocking(USART1, hk2_buf[j]);
+    // usart_send_blocking(USART1, '\r');
+    // usart_send_blocking(USART1, '\n');
+
+    putwd(hk_read); // Send one of 8 different HK vals muxed by lsbs of pakcount
 
     pakcount++;
 
@@ -214,11 +247,11 @@ long SWP_read(void)
     if (ropt == 19)
         val = sweeptable[step];
     else if (ropt == 20)
-        val = ST_VREFINT_CAL;
+        val = ST_VREFINT_CAL; // = 0x1FFFF7BA (0x7BA = 1978)
     else if (ropt == 21)
-        val = ST_TSENSE_CAL1_30C;
+        val = ST_TSENSE_CAL1_30C; // = 0x1FFFF7B8 (0x7B8 = 1976)
     else if (ropt == 22)
-        val = ST_TSENSE_CAL2_110C;
+        val = ST_TSENSE_CAL2_110C; // = 0x1FFFF7C2 (0x7C2 = 1986)
     else
         val = -1;
 
@@ -254,9 +287,9 @@ long HK_samp(void)
 {
     long mux, chan, val;
 
-    mux = pakcount & 0x7;
+    mux = pakcount & 0x7; // mux = pakcount % 8
     if (mux == 7)
-        return pakcount >> 3; // mux 7 returns msbs of pakcount
+        return pakcount >> 3; // mux 7 returns msbs of pakcount (pakcount is max 8)
 
     // other mux: sample hkchans in sequence
     chan = hkchans[mux];
@@ -549,14 +582,14 @@ static long cmdenable;
 
 static void DoCmd(long c)
 {
-    char cmd_buf[20];
-    int cmd_buf_len;
-    snprintf(cmd_buf, sizeof(cmd_buf), "DOING CMD");
-    cmd_buf_len = strlen(cmd_buf);
-    for (int j = 0; j < cmd_buf_len; j++)
-        usart_send_blocking(USART1, cmd_buf[j]);
-    usart_send_blocking(USART1, '\r');
-    usart_send_blocking(USART1, '\n');
+    // char cmd_buf[20];
+    // int cmd_buf_len;
+    // snprintf(cmd_buf, sizeof(cmd_buf), "DOING CMD");
+    // cmd_buf_len = strlen(cmd_buf);
+    // for (int j = 0; j < cmd_buf_len; j++)
+    //     usart_send_blocking(USART1, cmd_buf[j]);
+    // usart_send_blocking(USART1, '\r');
+    // usart_send_blocking(USART1, '\n');
 
     if (c == '*')
     {
@@ -710,14 +743,14 @@ int main(void)
     while (1)
     {
         tim1_cc_isr();
-        char while_buf[20];
-        int while_buf_len;
-        snprintf(while_buf, sizeof(while_buf), "IN WHILE LOOP");
-        while_buf_len = strlen(while_buf);
-        for (int j = 0; j < while_buf_len; j++)
-            usart_send_blocking(USART1, while_buf[j]);
-        usart_send_blocking(USART1, '\r');
-        usart_send_blocking(USART1, '\n');
+        // char while_buf[20];
+        // int while_buf_len;
+        // snprintf(while_buf, sizeof(while_buf), "IN WHILE LOOP");
+        // while_buf_len = strlen(while_buf);
+        // for (int j = 0; j < while_buf_len; j++)
+        //     usart_send_blocking(USART1, while_buf[j]);
+        // usart_send_blocking(USART1, '\r');
+        // usart_send_blocking(USART1, '\n');
 
         /** Interrupt & status register (USART_ISR) */
         // USART_ISR_RXNE: Read data register not empty
@@ -739,6 +772,8 @@ int main(void)
             // {
             //     usart_send_blocking(USART1, voltage_buf[j]);
             // }
+            // usart_send_blocking(USART1, '\r');
+            // usart_send_blocking(USART1, '\n');
 
             /** Receive data register (USART_RDR) */
             // DoCmd(USART_RDR(USART1));
