@@ -89,7 +89,7 @@ void tim1_cc_isr(void)
     // SYNC = 0XBB = 187 (I assume to make sure data is accurate)
     char sync_buf[20];
     int sync_buf_len;
-    snprintf(sync_buf, sizeof(sync_buf), "SYNC: %i", SYNC);
+    snprintf(sync_buf, sizeof(sync_buf), "SYNC:     %c - %i", SYNC, SYNC);
     sync_buf_len = strlen(sync_buf);
     for (int j = 0; j < sync_buf_len; j++)
         usart_send_blocking(USART1, sync_buf[j]);
@@ -101,7 +101,7 @@ void tim1_cc_isr(void)
 
     char pakcount_buf[20];
     int pakcount_buf_len;
-    snprintf(pakcount_buf, sizeof(pakcount_buf), "pakcount: %li", pakcount & 0xFF);
+    snprintf(pakcount_buf, sizeof(pakcount_buf), "pakcount: %c - %li", (pakcount & 0xFF), (pakcount & 0xFF));
     pakcount_buf_len = strlen(pakcount_buf);
     for (int j = 0; j < pakcount_buf_len; j++)
         usart_send_blocking(USART1, pakcount_buf[j]);
@@ -117,7 +117,7 @@ void tim1_cc_isr(void)
     // swab combined
     char spi_buf[20];
     int spi_buf_len;
-    snprintf(spi_buf, sizeof(spi_buf), "SPI_DR: %li", SPI1_DR);
+    snprintf(spi_buf, sizeof(spi_buf), "SPI_DR:   %c - %li", SPI1_DR, SPI1_DR);
     spi_buf_len = strlen(spi_buf);
     for (int j = 0; j < spi_buf_len; j++)
         usart_send_blocking(USART1, spi_buf[j]);
@@ -155,7 +155,7 @@ void tim1_cc_isr(void)
     // wd combined
     char swp_buf[20];
     int swp_buf_len;
-    snprintf(swp_buf, sizeof(swp_buf), "SWP_read: %i", swp_read);
+    snprintf(swp_buf, sizeof(swp_buf), "SWP_read: %c - %i", swp_read, swp_read);
     swp_buf_len = strlen(swp_buf);
     for (int j = 0; j < swp_buf_len; j++)
         usart_send_blocking(USART1, swp_buf[j]);
@@ -189,7 +189,7 @@ void tim1_cc_isr(void)
     // wd combined
     char hk_buf[20];
     int hk_buf_len;
-    snprintf(hk_buf, sizeof(hk_buf), "HK_samp: %i", hk_read);
+    snprintf(hk_buf, sizeof(hk_buf), "HK_samp:  %c - %i", hk_read, hk_read);
     hk_buf_len = strlen(hk_buf);
     for (int j = 0; j < hk_buf_len; j++)
         usart_send_blocking(USART1, hk_buf[j]);
