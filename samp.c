@@ -74,9 +74,9 @@ void StartSAMP(void)
     timer_set_oc_mode(TIM1, TIM_OC1, TIM_OCM_TOGGLE); // TIM1_CH1 CNV
     timer_enable_oc_output(TIM1, TIM_OC1);
     timer_enable_break_main_output(TIM1);
-    timer_set_oc_value(TIM1, TIM_OC1, period >> 1);
+    timer_set_oc_value(TIM1, TIM_OC1, 12000 >> 1);
     timer_set_prescaler(TIM1, 7); // need prescale TIM1 is 16-bit
-    timer_set_period(TIM1, period - 1);
+    timer_set_period(TIM1, 12000 - 1);
 
     // interrupt on CNV leading edge
     timer_generate_event(TIM1, TIM_EGR_CC1G | TIM_EGR_TG);
