@@ -1,4 +1,4 @@
-cerpa.o: cerpa.c libopencm3/include/libopencm3/stm32/rcc.h \
+HK.o: HK.c libopencm3/include/libopencm3/stm32/gpio.h \
  libopencm3/include/libopencm3/cm3/common.h \
  /Users/shanewoods/Library/xPacks/@xpack-dev-tools/arm-none-eabi-gcc/10.3.1-2.3.1/.content/lib/gcc/arm-none-eabi/10.3.1/include/stdint.h \
  /Users/shanewoods/Library/xPacks/@xpack-dev-tools/arm-none-eabi-gcc/10.3.1-2.3.1/.content/arm-none-eabi/include/stdint.h \
@@ -11,9 +11,6 @@ cerpa.o: cerpa.c libopencm3/include/libopencm3/stm32/rcc.h \
  libopencm3/include/libopencm3/stm32/memorymap.h \
  libopencm3/include/libopencm3/stm32/f0/memorymap.h \
  libopencm3/include/libopencm3/cm3/memorymap.h \
- libopencm3/include/libopencm3/stm32/f0/rcc.h \
- libopencm3/include/libopencm3/stm32/common/rcc_common_all.h \
- libopencm3/include/libopencm3/stm32/gpio.h \
  libopencm3/include/libopencm3/stm32/f0/gpio.h \
  libopencm3/include/libopencm3/stm32/common/gpio_common_f24.h \
  libopencm3/include/libopencm3/stm32/common/gpio_common_f234.h \
@@ -22,15 +19,10 @@ cerpa.o: cerpa.c libopencm3/include/libopencm3/stm32/rcc.h \
  libopencm3/include/libopencm3/stm32/f0/timer.h \
  libopencm3/include/libopencm3/stm32/common/timer_common_f24.h \
  libopencm3/include/libopencm3/stm32/common/timer_common_all.h \
- libopencm3/include/libopencm3/stm32/usart.h \
- libopencm3/include/libopencm3/stm32/f0/usart.h \
- libopencm3/include/libopencm3/stm32/common/usart_common_all.h \
- libopencm3/include/libopencm3/stm32/common/usart_common_v2.h \
+ libopencm3/include/libopencm3/stm32/adc.h \
+ libopencm3/include/libopencm3/stm32/f0/adc.h \
+ libopencm3/include/libopencm3/stm32/common/adc_common_v2.h \
+ libopencm3/include/libopencm3/stm32/common/adc_common_v2_single.h \
  libopencm3/include/libopencm3/cm3/nvic.h \
  libopencm3/include/libopencm3/dispatch/nvic.h \
- libopencm3/include/libopencm3/stm32/f0/nvic.h \
- libopencm3/include/libopencm3/stm32/dac.h \
- libopencm3/include/libopencm3/stm32/f0/dac.h \
- libopencm3/include/libopencm3/stm32/common/dac_common_v1.h \
- libopencm3/include/libopencm3/stm32/common/dac_common_all.h samp.h \
- uart.h HK.h
+ libopencm3/include/libopencm3/stm32/f0/nvic.h HK.h
