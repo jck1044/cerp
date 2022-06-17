@@ -33,5 +33,9 @@ samp.o: samp.c libopencm3/include/libopencm3/stm32/gpio.h \
  libopencm3/include/libopencm3/stm32/dac.h \
  libopencm3/include/libopencm3/stm32/f0/dac.h \
  libopencm3/include/libopencm3/stm32/common/dac_common_v1.h \
- libopencm3/include/libopencm3/stm32/common/dac_common_all.h uart.h \
+ libopencm3/include/libopencm3/stm32/common/dac_common_all.h \
+ libopencm3/include/libopencm3/stm32/usart.h \
+ libopencm3/include/libopencm3/stm32/f0/usart.h \
+ libopencm3/include/libopencm3/stm32/common/usart_common_all.h \
+ libopencm3/include/libopencm3/stm32/common/usart_common_v2.h uart.h \
  samp.h HK.h

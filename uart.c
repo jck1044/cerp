@@ -17,7 +17,6 @@
 // Buffered single char output. Put in mem buf and return. ISR sends it
 void putch(int ch)
 {
-    gpio_toggle(GPIOC, GPIO8);
     usart_send_blocking(USART1, ch);
 }
 

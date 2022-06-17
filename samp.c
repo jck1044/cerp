@@ -19,6 +19,7 @@
 #include <libopencm3/stm32/spi.h>
 #include <libopencm3/stm32/adc.h>
 #include <libopencm3/stm32/dac.h>
+#include <libopencm3/stm32/usart.h>
 
 #include "uart.h"
 #include "samp.h"
@@ -26,32 +27,22 @@
 
 #define SYNC 0xBB
 
-// **** GLOBALS used by sample ISR ***
-extern long pakcount;
-extern long sweeptable[];
-extern long step;
-extern long nsteps;
-extern long flip;
-
-extern uint32_t period; // step period (for setup)
-
 // *****  TIM1 ISR interrupts at rising edge of CNV *******************
 void tim1_cc_isr(void)
 {
-
-    gpio_toggle(GPIOC, GPIO8);
 
     // Assume external ADC conversion is complete by now (needs 900ns)
     SPI1_DR = 0x1; // read out external ADC via SPI
     while (!(SPI1_SR & SPI_SR_RXNE))
         ; // wait for SPI transfer complete
 
-    putswab(SPI1_DR); // Send RPA sample (SPI readout has bytes swapped)
+    putch(SPI1_DR);
 
     // extern ADC readout completed. Force CNV low
     TIM1_CCMR1 = TIM_CCMR1_OC1M_FORCE_LOW; // (assumes all other bits are zero)
     TIM1_CCMR1 = TIM_CCMR1_OC1M_TOGGLE;
 
+    gpio_clear(GPIOC, GPIO9);
     TIM1_SR = ~TIM_SR_CC1IF; // clear interrupt
 }
 // ********************************************************************
@@ -75,7 +66,7 @@ void StartSAMP(void)
     timer_enable_oc_output(TIM1, TIM_OC1);
     timer_enable_break_main_output(TIM1);
     timer_set_oc_value(TIM1, TIM_OC1, 12000 >> 1);
-    timer_set_prescaler(TIM1, 7); // need prescale TIM1 is 16-bit
+    timer_set_prescaler(TIM1, 479); // need prescale TIM1 is 16-bit
     timer_set_period(TIM1, 12000 - 1);
 
     // interrupt on CNV leading edge
