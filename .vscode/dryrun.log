@@ -1,6 +1,0 @@
-make --dry-run --keep-going --print-directory
-make: Entering directory `/Users/jaredking/Desktop/cerp'
-#printf "  LD      cerpa.elf\n"
-arm-none-eabi-gcc --static -nostartfiles -T/Users/jaredking/Desktop/cerp/libopencm3-examples-master/examples/stm32/f0/stm32f0-discovery/stm32f0-discovery.ld -mthumb -mcpu=cortex-m0 -msoft-float -ggdb3 -Wl,-Map=cerpa.map -Wl,--cref -Wl,--gc-sections -L/Users/jaredking/Desktop/cerp/libopencm3-master/lib samp.o uart.o HK.o cerpa.o -lopencm3_stm32f0 -Wl,--start-group -lc -lgcc -lnosys -Wl,--end-group -o cerpa.elf
-make: Leaving directory `/Users/jaredking/Desktop/cerp'
- 
