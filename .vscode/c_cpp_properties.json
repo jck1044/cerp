@@ -1,0 +1,19 @@
+{
+  "configurations": [
+    {
+      "name": "Linux STM32",
+      "includePath": ["${workspaceFolder}/**", "/usr/local/bin/"], //fixme: m1 does not have usr/local/bin path?
+      "defines": ["STM32F051R8"],
+      "intelliSenseMode": "linux-gcc-x64",
+      "cStandard": "c11",
+      "cppStandard": "c++20",
+      "browse": {
+        "path": ["${workspaceFolder}/**", "/usr/local/bin/"], //fixme: m1 does not have usr/local/bin path?
+        "limitSymbolsToIncludedHeaders": true,
+        "databaseFilename": "${workspaceFolder}/.vscode/browse.vc.db"
+      },
+      "configurationProvider": "ms-vscode.makefile-tools"
+    }
+  ],
+  "version": 4
+}
