@@ -63,25 +63,32 @@ void tim1_cc_isr(void)
     ////////////////VVV NEW CODE VVV//////////////////////////////////
 
     // old raw: raw value that we have been using in the past, straight from SPI1_DR.
-
     ////////////////VVV prints old raw in binary VVV//////////////////////////////////
-    unsigned n = SPI1_DR;
-    if (n > 32766)
-    {
-        putch('1');
-    }
-    else
-    {
-        putch('0');
-    }
-    if (counter <= 0)
-    {
-        putch('\r');
-        putch('\n');
-        putch('\n');
-        counter = 15;
-    }
-    counter--;
+    // unsigned n = SPI1_DR;
+    // unsigned i;
+    // int zero = 0;
+    // int one = 0;
+    // // decimal --> binary function
+    // for (i = 1 << 15; i > 0; i = i / 2)
+    // {
+    //     (n & i) ? one++ : zero++;
+    // }
+    // if (one > zero)
+    // {
+    //     putch('0');
+    // }
+    // else
+    // {
+    //     putch('1');
+    // }
+    // if (counter >= 15)
+    // {
+    //     putch('\r');
+    //     putch('\n');
+    //     putch('\n');
+    //     counter = 0;
+    // }
+    // counter++;
     ////////////////^^^ prints old raw in binary ^^^//////////////////////////////////
 
     ////////////////VVV prints old raw in decimal VVV//////////////////////////////////
@@ -102,15 +109,7 @@ void tim1_cc_isr(void)
     //          16 bits of new raw = 256 bits of old raw.
     ////////////////VVV prints new raw in binary VVV//////////////////////////////////
     // unsigned n = SPI1_DR;
-    // unsigned i;
-    // int zero = 0;
-    // int one = 0;
-    // // decimal --> binary function
-    // for (i = 1 << 15; i > 0; i = i / 2)
-    // {
-    //     (n & i) ? one++ : zero++;
-    // }
-    // if (one > zero)
+    // if (n > 32766)
     // {
     //     putch('1');
     // }
@@ -118,14 +117,15 @@ void tim1_cc_isr(void)
     // {
     //     putch('0');
     // }
-    // if (counter >= 15)
+    // if (counter <= 0)
     // {
     //     putch('\r');
     //     putch('\n');
     //     putch('\n');
-    //     counter = 0;
+    //     counter = 15;
+    //     binary = 0;
     // }
-    // counter++;
+    // counter--;
     ////////////////^^^ prints new raw in binary ^^^//////////////////////////////////
 
     ////////////////VVV prints new raw in decimal VVV//////////////////////////////////
