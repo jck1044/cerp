@@ -1,6 +1,6 @@
 {
-  "cortex-debug.gdbPath": "/usr/local/bin/arm-none-eabi-gdb",
-  "cortex-debug.stutilPath": "/usr/local/bin/st-util",
+  "cortex-debug.gdbPath": "/usr/local/bin/arm-none-eabi-gdb", //use "where arm-none-eabi-gdb"
+  "cortex-debug.stutilPath": "/usr/local/bin/st-util", //use "where arm-none-eabi-gdb"
   "makefile.extensionOutputFolder": "./.vscode",
   "git.ignoreLimitWarning": true
 }
