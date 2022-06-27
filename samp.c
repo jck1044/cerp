@@ -71,24 +71,11 @@ void tim1_cc_isr(void)
     // // decimal --> binary function
     // for (i = 1 << 15; i > 0; i = i / 2)
     // {
-    //     (n & i) ? one++ : zero++;
+    //     (n & i) ? putch('1') : putch('0');
     // }
-    // if (one > zero)
-    // {
-    //     putch('0');
-    // }
-    // else
-    // {
-    //     putch('1');
-    // }
-    // if (counter >= 15)
-    // {
-    //     putch('\r');
-    //     putch('\n');
-    //     putch('\n');
-    //     counter = 0;
-    // }
-    // counter++;
+    // putch('\r');
+    // putch('\n');
+    // putch('\n');
     ////////////////^^^ prints old raw in binary ^^^//////////////////////////////////
 
     ////////////////VVV prints old raw in decimal VVV//////////////////////////////////
@@ -107,6 +94,7 @@ void tim1_cc_isr(void)
     // new raw: I noticed that the 16 bits of the old raw were always all 1s or all 0s.
     //          So, I took those 16 bits and interpreted them as 1 bit.
     //          16 bits of new raw = 256 bits of old raw.
+
     ////////////////VVV prints new raw in binary VVV//////////////////////////////////
     // unsigned n = SPI1_DR;
     // if (n > 32766)
