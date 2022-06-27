@@ -1,4 +1,5 @@
 .vscode/*
+.vscode
 libopencm3/*
 libopencm3-examples/*
 *.o
