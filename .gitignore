@@ -1,0 +1,14 @@
+.vscode/*
+libopencm3/*
+libopencm3-examples/*
+*.o
+**/o
+*.map
+**/map
+*.d
+**/d
+*.bin
+**/bin
+*.elf
+**/elf
+.DS_Store
